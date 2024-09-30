@@ -1,0 +1,116 @@
+{
+  "users": [
+    {
+      "id": "01aa",
+      "name": "Robert Paulson",
+      "email": "bobby.paulson@readysetgo.com",
+      "password": "pass"
+    },
+    {
+      "id": "02bb",
+      "name": "Tester",
+      "email": "test@test.com",
+      "password": "pass"
+    },
+    {
+      "id": "301c",
+      "email": "bug@fixed.com",
+      "name": "bugger",
+      "password": "pass"
+    },
+    {
+      "id": "a812",
+      "email": "its@good.com",
+      "name": "check",
+      "password": "pass"
+    }
+  ],
+  "stores": [
+    {
+      "id": "01",
+      "name": "garageFridge",
+      "userId": "01aa"
+    },
+    {
+      "id": "022c",
+      "name": "lx470",
+      "userId": "01aa"
+    },
+    {
+      "id": "5218",
+      "name": "store 1",
+      "userId": "301c"
+    },
+    {
+      "id": "f099",
+      "name": "Test's store ",
+      "userId": "02bb"
+    },
+    {
+      "id": "fc7b",
+      "name": "its good store",
+      "userId": "a812"
+    }
+  ],
+  "items": [
+    {
+      "id": "01a1",
+      "name": "shovel",
+      "image": "https://plus.unsplash.com/premium_photo-1680658496041-f7575066cec2?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "short shovel",
+      "quantity": "1",
+      "minQuantity": "1",
+      "storeId": "022c"
+    },
+    {
+      "id": "02b1",
+      "name": "recoveryGear",
+      "image": "https://media.istockphoto.com/id/2101625741/photo/fastenings-for-transporting-goods-straps-steel-shackles-and-ratchet-locks.webp?b=1&s=170667a&w=0&k=20&c=w2DTHxBsWkUjQWtUivHmuNzDgtmPAqQBIhuY5vZFdm0=",
+      "description": "straps, shackles, etc",
+      "quantity": "1",
+      "minQuantity": "1",
+      "storeId": "022c"
+    },
+    {
+      "id": "03c1",
+      "name": "babyMilk    ",
+      "image": "babyMilk.jpg",
+      "description": "frozen breast milk",
+      "quantity": "99",
+      "minQuantity": "18",
+      "storeId": "01"
+    },
+    {
+      "id": "1751",
+      "name": "item 1 ",
+      "image": "NA",
+      "description": "test lorem",
+      "quantity": 10,
+      "minQuantity": "1",
+      "storeId": "5218"
+    },
+    {
+      "id": "d003",
+      "name": "Test first item ",
+      "image": "na",
+      "description": "lorem ipppp",
+      "quantity": "19",
+      "minQuantity": "1",
+      "storeId": "f099"
+    }
+  ],
+  "favorites": [
+    {
+      "itemId": "01a1",
+      "id": "28ab"
+    },
+    {
+      "itemId": "02b1",
+      "id": "a0b5"
+    },
+    {
+      "id": "8654",
+      "itemId": "1751"
+    }
+  ]
+}
