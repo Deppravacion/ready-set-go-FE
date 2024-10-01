@@ -4,8 +4,9 @@ import { UserType, AuthTypes } from "../types/AuthTypes";
 import {
   createUser,
   getUserByEmail,
-  getUsersFromDB,
+  // getUsersFromDB,
 } from "../api/users/api-users";
+import { authenticateUser } from "../api/auth/api-auth";
 
 export const AuthContext = createContext({} as AuthTypes);
 
@@ -28,14 +29,11 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     password: string;
   }) => {
     try {
-      const data = await getUsersFromDB();
-      const user = data.find(
-        (user: UserType) => user.email === email && user.password === password
-      );
-      if (!user) {
-        toast.error("Invalid email or password");
-        throw new Error("Invalid email or password");
-      }
+      // const data = await getUsersFromDB();
+      // const user: UserType = data.find(
+      //   (user: UserType) => user.email === email && user.password === password
+      // );
+      const user = await authenticateUser(email, password);
 
       sessionStorage.setItem("user", JSON.stringify(user));
       sessionStorage.setItem("authtoken", true.toString());

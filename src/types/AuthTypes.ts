@@ -21,7 +21,7 @@ export type AuthTypes = {
 
 export type UserType = {
   id?: string;
-  name: string;
+  name?: string;
   email: string;
   password?: string;
 };
