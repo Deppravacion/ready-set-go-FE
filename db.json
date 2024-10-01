@@ -94,7 +94,7 @@
       "name": "Test first item ",
       "image": "na",
       "description": "lorem ipppp",
-      "quantity": "19",
+      "quantity": 18,
       "minQuantity": "1",
       "storeId": "f099"
     }

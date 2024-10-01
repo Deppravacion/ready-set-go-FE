@@ -1,10 +1,16 @@
 import { StoresType } from "../../types/AppTypes";
 
 export const getStoresFromDB = async () => {
-  return await fetch(`http://localhost:3004/stores`).then((response) =>
+  return await fetch(`http://localhost:3000/stores`).then((response) =>
     response.json()
   );
 };
+// original call below
+// export const getStoresFromDB = async () => {
+//   return await fetch(`http://localhost:3004/stores`).then((response) =>
+//     response.json()
+//   );
+// };
 
 export const getStoresByUserId = async (userId: string) => {
   const stores = await getStoresFromDB();
