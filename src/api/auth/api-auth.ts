@@ -1,7 +1,11 @@
 import { toast } from "react-toastify";
+import { AuthResponse } from "../../types/AuthTypes";
 // import { UserType } from "../../types/AuthTypes";
 
-export const authenticateUser = async (email: string, password: string) => {
+export const authenticateUser = async (
+  email: string,
+  password: string
+): Promise<AuthResponse> => {
   const response = await fetch("http://localhost:3000/auth/login", {
     method: "POST",
     headers: {

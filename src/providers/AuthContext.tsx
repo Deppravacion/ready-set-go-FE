@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
-import { UserType, AuthTypes } from "../types/AuthTypes";
+import { UserType, AuthTypes, AuthResponse } from "../types/AuthTypes";
 import {
   createUser,
   getUserByEmail,
@@ -11,7 +11,8 @@ import { authenticateUser } from "../api/auth/api-auth";
 export const AuthContext = createContext({} as AuthTypes);
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
-  const [user, setUser] = useState<UserType | null>(null);
+  const [user, setUser] = useState<AuthResponse | null>(null);
+  // const [user, setUser] = useState<UserType | null>(null);
 
   useEffect(() => {
     const user = sessionStorage.getItem("user");
@@ -29,10 +30,8 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     password: string;
   }) => {
     try {
-      // const data = await getUsersFromDB();
-      // const user: UserType = data.find(
-      //   (user: UserType) => user.email === email && user.password === password
-      // );
+      // working through grabbing the authenticated user data,
+      // token, userInformation
       const user = await authenticateUser(email, password);
 
       sessionStorage.setItem("user", JSON.stringify(user));

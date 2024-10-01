@@ -1,7 +1,9 @@
 export type AuthTypes = {
-  user?: UserType | null;
+  // user?: UserType | null;
+  user?: AuthResponse | null;
 
-  setUser: (user: UserType | null) => void;
+  setUser: (user: AuthResponse | null) => void;
+  // setUser: (user: UserType | null) => void;
   handleLogin: ({
     email,
     password,
@@ -24,4 +26,14 @@ export type UserType = {
   name?: string;
   email: string;
   password?: string;
+};
+
+export type UserInformation = {
+  email: string;
+  name?: string;
+};
+
+export type AuthResponse = {
+  token: string;
+  userInformation: UserInformation;
 };
