@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { AuthTypes, AuthenticatedUser, UserSignup } from "../types/AuthTypes";
 import {
   createUser,
-  getUserByEmail,
+  // getUserByEmail,
   // getUsersFromDB,
 } from "../api/users/api-users";
 import { authenticateUser } from "../api/auth/api-auth";
@@ -51,12 +51,12 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       throw new Error("Passwords do not match");
     }
 
-    const queryUser = await getUserByEmail(email);
-    // console.log(queryUser);
-    if (queryUser) {
-      toast.error("User already exists");
-      throw new Error("User already exists");
-    }
+    // const queryUser = await getUserByEmail(email);
+    // // console.log(queryUser);
+    // if (queryUser) {
+    //   toast.error("User already exists");
+    //   throw new Error("User already exists");
+    // }
 
     const newUser: UserSignup = {
       email,

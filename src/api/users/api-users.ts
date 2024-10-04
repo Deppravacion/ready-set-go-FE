@@ -14,7 +14,7 @@ export const getUserByEmail = async (email: string) => {
 };
 
 export const createUser = async (user: any): Promise<any> => {
-  const response = await fetch("http://localhost:3000/users", {
+  const response = await fetch("http://localhost:3000/users/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

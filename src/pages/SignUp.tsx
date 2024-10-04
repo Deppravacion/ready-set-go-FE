@@ -36,8 +36,9 @@ export const SignUp = () => {
       newUser.email,
       newUser.password,
       newUser.confirmPassword
-    );
-    navigate("/home"); // since they are not authenticated it will reroute to signIn
+    ).catch((e) => e.message);
+
+    navigate("/signin");
   };
 
   const fields = [
