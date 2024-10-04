@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
-import { UserType, AuthTypes, AuthResponse } from "../types/AuthTypes";
+import { AuthTypes, AuthenticatedUser, UserSignup } from "../types/AuthTypes";
 import {
   createUser,
   getUserByEmail,
@@ -11,14 +11,13 @@ import { authenticateUser } from "../api/auth/api-auth";
 export const AuthContext = createContext({} as AuthTypes);
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
-  const [user, setUser] = useState<AuthResponse | null>(null);
-  // const [user, setUser] = useState<UserType | null>(null);
+  const [user, setUser] = useState<AuthenticatedUser | null>(null);
 
   useEffect(() => {
-    const user = sessionStorage.getItem("user");
-    if (user) {
-      setUser(JSON.parse(user));
-      sessionStorage.setItem("authtoken", "true");
+    const sessionStorageObject = sessionStorage.getItem("user");
+    if (sessionStorageObject) {
+      const sessionUser = JSON.parse(sessionStorageObject);
+      sessionStorage.setItem("authtoken", sessionUser.token);
     }
   }, []);
 
@@ -30,13 +29,11 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     password: string;
   }) => {
     try {
-      // working through grabbing the authenticated user data,
-      // token, userInformation
-      const user = await authenticateUser(email, password);
-
-      sessionStorage.setItem("user", JSON.stringify(user));
-      sessionStorage.setItem("authtoken", true.toString());
-      setUser(user);
+      const authenticatedUser = await authenticateUser(email, password);
+      // console.log({ authedUser: authenticatedUser });
+      sessionStorage.setItem("user", JSON.stringify(authenticatedUser));
+      sessionStorage.setItem("authtoken", authenticatedUser.token);
+      setUser(authenticatedUser);
     } catch (error: unknown) {
       console.error(error);
       toast.error("Error logging in");
@@ -55,26 +52,38 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     }
 
     const queryUser = await getUserByEmail(email);
+    // console.log(queryUser);
     if (queryUser) {
       toast.error("User already exists");
-      throw new Error("User already exists 01");
+      throw new Error("User already exists");
     }
 
-    const newUser: UserType = {
+    const newUser: UserSignup = {
       email,
       name,
       password,
+      confirmPassword,
     };
 
     try {
       const createdUser = await createUser(newUser);
-      setUser(createdUser);
-      sessionStorage.setItem("user", JSON.stringify(createdUser));
+      const authenticatedUser: AuthenticatedUser = {
+        token: "someToken",
+        userInformation: {
+          id: createdUser.id,
+          name: createdUser.name,
+          email: createdUser.email,
+        },
+      };
+      setUser(authenticatedUser);
+      sessionStorage.setItem("user", JSON.stringify(authenticatedUser));
       sessionStorage.setItem("authtoken", "true");
+      // sessionStorage.setItem("authtoken", "true");
       toast.success("User created successfully");
     } catch (error: unknown) {
       console.error(error);
       toast.error("Error creating user");
+      throw error;
     }
   };
 
