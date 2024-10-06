@@ -60,6 +60,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
     try {
       const createdUser = await createUser(newUser);
+      console.log(newUser);
       const authenticatedUser: AuthenticatedUser = {
         token: "someToken",
         userInformation: {
