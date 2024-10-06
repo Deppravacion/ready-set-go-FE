@@ -1,11 +1,7 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import { AuthTypes, AuthenticatedUser, UserSignup } from "../types/AuthTypes";
-import {
-  createUser,
-  // getUserByEmail,
-  // getUsersFromDB,
-} from "../api/users/api-users";
+import { createUser } from "../api/users/api-users";
 import { authenticateUser } from "../api/auth/api-auth";
 
 export const AuthContext = createContext({} as AuthTypes);
@@ -72,7 +68,6 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       setUser(authenticatedUser);
       sessionStorage.setItem("user", JSON.stringify(authenticatedUser));
       sessionStorage.setItem("authtoken", "true");
-      // sessionStorage.setItem("authtoken", "true");
       toast.success("User created successfully");
     } catch (error: unknown) {
       console.error(error);
