@@ -1,7 +1,9 @@
 export type AuthTypes = {
-  user?: UserType | null;
+  // user?: UserType | null;
+  user?: AuthenticatedUser | null;
 
-  setUser: (user: UserType | null) => void;
+  setUser: (user: AuthenticatedUser | null) => void;
+  // setUser: (user: UserType | null) => void;
   handleLogin: ({
     email,
     password,
@@ -21,7 +23,20 @@ export type AuthTypes = {
 
 export type UserType = {
   id?: string;
-  name: string;
+  name?: string;
   email: string;
   password?: string;
+};
+
+export interface UserSignup extends UserType {
+  confirmPassword: string;
+}
+
+export type UserInformation = Omit<UserType, "password"> & {
+  id?: number | string;
+};
+
+export type AuthenticatedUser = {
+  token: string;
+  userInformation: UserInformation;
 };
