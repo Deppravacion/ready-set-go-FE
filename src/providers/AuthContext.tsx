@@ -1,6 +1,11 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
-import { AuthTypes, AuthenticatedUser, UserSignup } from "../types/AuthTypes";
+import {
+  AuthTypes,
+  AuthenticatedUser,
+  UserSignup,
+  UserType,
+} from "../types/AuthTypes";
 import { createUser } from "../api/users/api-users";
 import { authenticateUser } from "../api/auth/api-auth";
 
@@ -14,6 +19,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     if (sessionStorageObject) {
       const sessionUser = JSON.parse(sessionStorageObject);
       sessionStorage.setItem("authtoken", sessionUser.token);
+      setUser(user);
     }
   }, []);
 
@@ -55,7 +61,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     };
 
     try {
-      const createdUser = await createUser(newUser);
+      const createdUser: UserType = await createUser(newUser);
       console.log(newUser);
       const authenticatedUser: AuthenticatedUser = {
         token: "someToken",

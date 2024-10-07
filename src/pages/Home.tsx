@@ -3,8 +3,9 @@ import { useAuthProvider } from "../providers/AuthContext";
 import { useAppProvider } from "../providers/AppContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getItemsByStoreId } from "../api/items/api-items";
 import { ThemeToggler } from "../theme/ThemeToggler";
+// import { getUserStores } from "../api/stores/api-stores";
+import { getItemsByStoreId } from "../api/items/api-items";
 
 type StoreCardProps = {
   store: StoresType;
@@ -14,11 +15,17 @@ const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
   const [items, setItems] = useState<ItemsType[] | null>(null);
   const { stores, userTheme } = useAppProvider();
   const navigate = useNavigate();
+  const { user } = useAuthProvider();
+
+  console.log({ user: user });
 
   useEffect(() => {
-    if (!store) return;
-    if (!store.id) return;
-    getItemsByStoreId(store.id).then((storeItems: ItemsType[]) => {
+    if (!stores) return;
+    if (!stores[0].id) return;
+    const userId = user?.userInformation.id ?? "";
+
+    getItemsByStoreId(userId, stores[0].id).then((storeItems: ItemsType[]) => {
+      console.log({ storeItems: stores[0].items });
       setItems(storeItems);
     });
   }, [stores, userTheme]);
@@ -61,12 +68,13 @@ export const Home = () => {
   const { handleGetUserStores, userTheme } = useAppProvider();
   const { stores } = useAppProvider();
   const name = user?.userInformation.name;
-  const subTitle: string = `Welcome ${name} to your home page!`;
+  const subTitle: string = `${name}, welcome to your home page!`;
   const title: string = "Ready Set Go!";
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) return;
+    // console.log({ user: user });
     if (!user.userInformation.id) return;
     handleGetUserStores(user.userInformation.id.toString());
   }, [user]);
@@ -85,7 +93,8 @@ export const Home = () => {
           {stores ? (
             stores.map((store) => <StoreCard store={store} key={store.id} />)
           ) : (
-            <StoreCard store={defaultStoreCardData.store} />
+            <StoreCard store={stores || defaultStoreCardData.store} />
+            // <StoreCard store={defaultStoreCardData.store} />
           )}
         </div>
         <div className="flex justify-between my-[10px]">

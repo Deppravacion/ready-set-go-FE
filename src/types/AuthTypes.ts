@@ -1,5 +1,6 @@
 export type AuthTypes = {
   // user?: UserType | null;
+  // user: AuthenticatedUser;
   user?: AuthenticatedUser | null;
 
   setUser: (user: AuthenticatedUser | null) => void;
@@ -23,7 +24,7 @@ export type AuthTypes = {
 
 export type UserType = {
   id?: string;
-  name?: string;
+  name: string;
   email: string;
   password?: string;
 };

@@ -1,28 +1,17 @@
 import { toast } from "react-toastify";
 import { ItemsType } from "../../types/AppTypes";
 
-export const getItemsFromDB = async () => {
-  return await fetch(`http://localhost:3004/items`).then((response) =>
-    response.json()
-  );
-};
-
-export const getItemsByStoreId = async (storeId: string) => {
-  try {
-    const items = await getItemsFromDB();
-    const storeItems = items.filter(
-      (item: ItemsType) => item.storeId === storeId
-    );
-    return storeItems;
-  } catch (error) {
-    console.error(error);
-    toast.error("Error fetching items");
-  }
+export const getItemsByStoreId = async (userId: string, storeId: string) => {
+  return await fetch(
+    `http://localhost:3000/users/${userId}/stores/${storeId}/items`
+  ).then((response) => response.json());
 };
 
 export const getItemById = async (itemId: string) => {
+  const userId = "default to be replaced"; // grab this info but do not require it as arg if possible
+  const storeId = "default to be replaced";
   try {
-    const items = await getItemsFromDB();
+    const items = await getItemsByStoreId(userId, storeId);
     return items.filter((item: ItemsType) => item.id === itemId);
   } catch (error) {
     console.error(error);

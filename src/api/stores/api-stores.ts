@@ -1,20 +1,20 @@
 import { StoresType } from "../../types/AppTypes";
 
-export const getStoresFromDB = async () => {
-  return await fetch(`http://localhost:3000/stores`).then((response) =>
-    response.json()
-  );
-};
-// original call below
 // export const getStoresFromDB = async () => {
-//   return await fetch(`http://localhost:3004/stores`).then((response) =>
+//   return await fetch(`http://localhost:3000/stores`).then((response) =>
 //     response.json()
 //   );
 // };
 
-export const getStoresByUserId = async (userId: string) => {
-  const stores = await getStoresFromDB();
-  return stores.filter((store: StoresType) => store.userId === userId);
+// export const getStoresByUserId = async (userId: string) => {
+//   const stores = await getStoresFromDB();
+//   return stores.filter((store: StoresType) => store.userId === userId);
+// };
+
+export const getUserStores = async (userId: string) => {
+  return await fetch(`http://localhost:3000/users/${userId}/stores`).then(
+    (res) => res.json()
+  );
 };
 
 export const createStore = async (store: StoresType) => {

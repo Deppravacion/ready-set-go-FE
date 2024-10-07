@@ -1,12 +1,13 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { AppContextTypes, ItemsType, StoresType } from "../types/AppTypes";
 import { toast } from "react-toastify";
-import { createStore, getStoresByUserId } from "../api/stores/api-stores";
+import { createStore, getUserStores } from "../api/stores/api-stores";
 import { useAuthProvider } from "./AuthContext";
 import {
   createItem,
   deleteItem,
   getItemsByStoreId,
+  // getItemsByStoreId,
 } from "../api/items/api-items";
 
 export const AppContext = createContext({} as AppContextTypes);
@@ -14,6 +15,15 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
   const [stores, setStores] = useState<StoresType[] | null>();
   const [userTheme, setUserTheme] = useState("business");
   const { user } = useAuthProvider();
+
+  const handleGetUserStores = async (userId: string) => {
+    try {
+      await getUserStores(userId);
+    } catch (error) {
+      console.error(error);
+      toast.error("Error fetching stores");
+    }
+  };
 
   const handleAddStore = async (name: string, userId: string) => {
     const newStore = {
@@ -28,8 +38,12 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
     }
   };
 
-  const handleCreateItem = async (item: ItemsType, storeId: string) => {
-    const items = await getItemsByStoreId(storeId);
+  const handleCreateItem = async (item: ItemsType) => {
+    console.log("handleCreateItem  under construction");
+    // const items = await getItemsByStoreId(storeId);
+    const userId = "required: find the userId";
+    const storeId = "required: find the userId";
+    const items = await getItemsByStoreId(userId, storeId);
     if (
       items.some(
         (elm: ItemsType) => elm.name.toLowerCase() === item.name.toLowerCase()
@@ -61,21 +75,10 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
     }
   };
 
-  const handleGetUserStores = async (userId: string) => {
-    try {
-      return await getStoresByUserId(userId).then((userStores) => {
-        setStores(userStores);
-      });
-    } catch (error) {
-      console.error(error);
-      toast.error("Error fetching stores");
-    }
-  };
-
   useEffect(() => {
     if (!user) return;
-    if (!user.id) return;
-    handleGetUserStores(user.id);
+    if (!user.userInformation.id) return;
+    handleGetUserStores(user.userInformation.id);
   }, [user]);
 
   return (
