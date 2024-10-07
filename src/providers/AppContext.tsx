@@ -7,7 +7,6 @@ import {
   createItem,
   deleteItem,
   getItemsByStoreId,
-  // getItemsByStoreId,
 } from "../api/items/api-items";
 
 export const AppContext = createContext({} as AppContextTypes);
@@ -17,8 +16,11 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
   const { user } = useAuthProvider();
 
   const handleGetUserStores = async (userId: string) => {
+    console.log("getUserStores, ", userId);
     try {
-      await getUserStores(userId);
+      const userStores = await getUserStores(userId);
+      setStores(userStores);
+      console.log("userStores are set: ", userStores);
     } catch (error) {
       console.error(error);
       toast.error("Error fetching stores");
