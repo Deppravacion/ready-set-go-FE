@@ -23,6 +23,7 @@ type CardProps = {
 
 const CollapseItem: React.FC<CardProps> = ({ item, fetchItems, favorites }) => {
   const { id, name, image, description, quantity, minQuantity } = item;
+  //use the get fav by id here , possibly better to store all favs in an array for the store too 
   const isFavorite = favorites && favorites.some((fav) => fav.itemId === id);
 
   return (
