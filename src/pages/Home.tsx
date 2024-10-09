@@ -17,15 +17,12 @@ const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
   const navigate = useNavigate();
   const { user } = useAuthProvider();
 
-  console.log({ user: user });
-
   useEffect(() => {
     if (!stores) return;
     if (!stores[0].id) return;
     const userId = user?.userInformation.id ?? "";
 
     getItemsByStoreId(userId, stores[0].id).then((storeItems: ItemsType[]) => {
-      console.log({ storeItems: stores[0].items });
       setItems(storeItems);
     });
   }, [stores, userTheme]);
@@ -74,7 +71,6 @@ export const Home = () => {
 
   useEffect(() => {
     if (!user) return;
-    // console.log({ user: user });
     if (!user.userInformation.id) return;
     handleGetUserStores(user.userInformation.id.toString());
   }, [user]);

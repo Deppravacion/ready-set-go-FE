@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     if (sessionStorageObject) {
       const sessionUser = JSON.parse(sessionStorageObject);
       sessionStorage.setItem("authtoken", sessionUser.token);
-      setUser(user);
+      setUser(sessionUser);
     }
   }, []);
 

@@ -32,13 +32,13 @@ const CollapseItem: React.FC<CardProps> = ({ item, fetchItems, favorites }) => {
           isFavorite ? "ring-2 ring-red-500" : ""
         } `}
       >
-        <input type='checkbox' className='peer' />
-        <div className='collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content'>
+        <input type="checkbox" className="peer" />
+        <div className="collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
           name: {name}
         </div>
-        <div className='collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content'>
-          <div className='avatar'>
-            <div className='w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2'>
+        <div className="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
+          <div className="avatar">
+            <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
               <img src={image} />
             </div>
             {/* <div>image link:{image}</div> */}
@@ -71,29 +71,29 @@ const ItemsInterface: React.FC<CardProps> = ({ item, fetchItems }) => {
     <>
       {item && item.id && (
         <>
-          <div className='flex  gap-1 flex-col justify-center text-2xl mb-1 p-4'>
+          <div className="flex  gap-1 flex-col justify-center text-2xl mb-1 p-4">
             <button
-              className='btn btn-info flex btn-sm min-w-16 text-2xl items-center leading-none'
+              className="btn btn-info flex btn-sm min-w-16 text-2xl items-center leading-none"
               onMouseDown={() => increaseItemQuantity(item!.id!)}
             >
               +
             </button>
             <button
-              className='btn  btn-warning btn-sm min-w-16 text-2xl items-center leading-none'
+              className="btn  btn-warning btn-sm min-w-16 text-2xl items-center leading-none"
               onMouseDown={() => decreaseItemQuantity(item!.id!)}
             >
               -
             </button>
           </div>
-          <div className='flex justify-around'>
+          <div className="flex justify-around">
             <button
-              className='btn btn-error btn-sm min-w-16'
+              className="btn btn-error btn-sm min-w-16"
               onMouseDown={() => deleteItem()}
             >
               Delete
             </button>
             <button
-              className='btn btn-success btn-sm min-w-16'
+              className="btn btn-success btn-sm min-w-16"
               onMouseDown={() => toggleFavorite(item!.id!)}
             >
               Fav
@@ -107,38 +107,55 @@ const ItemsInterface: React.FC<CardProps> = ({ item, fetchItems }) => {
 
 export const Details = () => {
   const navigate = useNavigate();
-  const { handleLogout } = useAuthProvider();
+  const { handleLogout, user } = useAuthProvider();
   const { stores, userTheme } = useAppProvider();
   const { storeId } = useParams();
   const [storeItems, setStoreItems] = useState<ItemsType[]>();
   const [favoriteItems, setFavoriteItems] = useState<FavoritesType[]>();
   const storeName = stores?.find((store) => store.id === storeId)?.name;
 
+  // const fetchItems = async () => {
+  //   if (user && storeId) {
+  //     const userId = user.userInformation.id;
+  //     const items = await getItemsByStoreId(userId, storeId);
+  //     if (items) {
+  //       setStoreItems(items);
+  //     }
+  //   }
+  // };
   const fetchItems = async () => {
-    const items = await getItemsByStoreId(storeId ?? "");
-    if (items) setStoreItems(items);
+    if (user && storeId) {
+      const userId = user.userInformation.id;
+      if (userId && storeId) {
+        const items = await getItemsByStoreId(userId, storeId);
+        if (items) {
+          setStoreItems(items);
+        }
+      }
+    }
   };
   const fetchFavorites = async () => {
-    const favorites = await getFavoritesFromDB();
-    if (favorites) setFavoriteItems(favorites);
+    console.log({ fetchFavorites: "currently under construction standby" });
+    // const favorites = await getFavoritesFromDB();
+    // if (favorites) setFavoriteItems(favorites);
   };
 
   useEffect(() => {
     fetchItems();
     fetchFavorites();
-  }, [stores, storeItems]);
+  }, [stores, storeId, user]);
 
   return (
     <>
       <div
         data-theme={userTheme}
-        className='card w-96 bg-base-100 shadow-xl m-auto p-4'
+        className="card w-96 bg-base-100 shadow-xl m-auto p-4"
       >
-        <div className='container mx-auto p-10 bg-accent rounded-md '>
-          <h2 className='text-lg'>{storeName}</h2>
-          <h2 className='text-md'>{`${subTitle} for the store: ${storeId}`}</h2>
+        <div className="container mx-auto p-10 bg-accent rounded-md ">
+          <h2 className="text-lg">{storeName}</h2>
+          <h2 className="text-md">{`${subTitle} for the store: ${storeId}`}</h2>
         </div>
-        <div className='card-body'>
+        <div className="card-body">
           {/* ******** */}
           {storeItems &&
             storeItems.map((item, i) => {
@@ -154,9 +171,9 @@ export const Details = () => {
           {/* ******** */}
         </div>
 
-        <div className='flex justify-between my-[10px]'>
+        <div className="flex justify-between my-[10px]">
           <button
-            className='btn btn-outline rounded-none btn-warning px-2'
+            className="btn btn-outline rounded-none btn-warning px-2"
             onClick={() => {
               handleLogout();
               navigate("/signin");
@@ -165,14 +182,14 @@ export const Details = () => {
             Logout
           </button>
           <button
-            className='btn btn-outline rounded-none btn-success'
+            className="btn btn-outline rounded-none btn-success"
             onClick={() => navigate("/home")}
           >
             Home
           </button>
           {/* Open the modal using document.getElementById('ID').showModal() method */}
           <button
-            className='btn btn-outline rounded-none btn-info'
+            className="btn btn-outline rounded-none btn-info"
             onClick={() => navigate(`/createitem/${storeId}`)}
           >
             New

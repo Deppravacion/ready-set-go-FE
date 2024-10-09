@@ -1,13 +1,26 @@
 import { toast } from "react-toastify";
 import { FavoritesType } from "../../types/AppTypes";
 
-export const getFavoritesFromDB = async () => {
-  return await fetch(`http://localhost:3004/favorites`).then((response) =>
+//get favs from a store
+export const getFavoritesFromDB = async (
+  userId: string,
+  storeId: string,
+  itemId: string
+) => {
+  return await fetch(
+    `http://localhost:3000/users/${userId}/stores/${storeId}/favorites`
+  ).then((response) =>
+    // return await fetch(`http://localhost:3000/users/${userId}/stores/${storeId}/items/${itemId}/favorite`).then((response) =>
     response.json()
   );
 };
 
-export const getFavoritesByItemId = async (itemId: string) => {
+//get favs by id
+export const getFavoritesByItemId = async (
+  userId: string,
+  storeId: string,
+  itemId: string
+) => {
   try {
     const favorites = await getFavoritesFromDB();
     return favorites.filter(
@@ -19,6 +32,7 @@ export const getFavoritesByItemId = async (itemId: string) => {
   }
 };
 
+//create a fav
 export const createFavorite = async (favorite: FavoritesType) => {
   try {
     return await fetch("http://localhost:3004/favorites", {
@@ -34,6 +48,7 @@ export const createFavorite = async (favorite: FavoritesType) => {
   }
 };
 
+//he gone a fav
 export const deleteFavoriteById = async (id: string) => {
   return await fetch(`http://localhost:3004/favorites/${id}`, {
     method: "DELETE",
