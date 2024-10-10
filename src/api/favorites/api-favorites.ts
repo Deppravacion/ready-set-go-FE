@@ -2,11 +2,7 @@ import { toast } from "react-toastify";
 import { FavoritesType } from "../../types/AppTypes";
 
 //get favs from a store
-export const getFavoritesFromDB = async (
-  userId: string,
-  storeId: string,
-  itemId: string
-) => {
+export const getFavoritesFromDB = async (userId: string, storeId: string) => {
   return await fetch(
     `http://localhost:3000/users/${userId}/stores/${storeId}/favorites`
   ).then((response) =>
@@ -21,15 +17,9 @@ export const getFavoritesByItemId = async (
   storeId: string,
   itemId: string
 ) => {
-  try {
-    const favorites = await getFavoritesFromDB();
-    return favorites.filter(
-      (favorite: FavoritesType) => favorite.itemId === itemId
-    );
-  } catch (error) {
-    console.error(error);
-    toast.error("Error fetching favorites");
-  }
+  return await fetch(
+    `http://localhost:3000/users/${userId}/stores/${storeId}/items/${itemId}/favorite`
+  ).then((response) => response.json());
 };
 
 //create a fav
@@ -55,8 +45,12 @@ export const deleteFavoriteById = async (id: string) => {
   });
 };
 
-export const toggleFavorite = async (itemId: string) => {
-  const favorites = await getFavoritesByItemId(itemId);
+export const toggleFavorite = async (
+  userId: string,
+  storeId: string,
+  itemId: string
+) => {
+  const favorites = await getFavoritesByItemId(userId, storeId, itemId);
   console.log(itemId, favorites);
   try {
     if (favorites.length === 0) {
