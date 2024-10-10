@@ -39,10 +39,17 @@ export const createFavorite = async (favorite: FavoritesType) => {
 };
 
 //he gone a fav
-export const deleteFavoriteById = async (id: string) => {
-  return await fetch(`http://localhost:3004/favorites/${id}`, {
-    method: "DELETE",
-  });
+export const deleteFavoriteById = async (
+  userId: string,
+  storeId: string,
+  itemId: string
+) => {
+  return await fetch(
+    `http://localhost:3000/users/${userId}/stores/${storeId}/items/${itemId}/favorite`,
+    {
+      method: "DELETE",
+    }
+  );
 };
 
 export const toggleFavorite = async (
@@ -60,7 +67,7 @@ export const toggleFavorite = async (
       };
       return await createFavorite(newFavorite);
     } else {
-      return await deleteFavoriteById(favorites[0].id);
+      return await deleteFavoriteById(userId, storeId, favorites[0].id);
     }
   } catch (error) {
     console.error(error);
