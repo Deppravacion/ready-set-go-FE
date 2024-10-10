@@ -16,14 +16,21 @@ import {
 const subTitle: string = "Store details!";
 
 type CardProps = {
+  userId: string;
+  storeId: string;
   item: ItemsType;
   fetchItems: () => void;
   favorites?: FavoritesType[];
 };
 
-const CollapseItem: React.FC<CardProps> = ({ item, fetchItems, favorites }) => {
+const CollapseItem: React.FC<CardProps> = ({
+  userId,
+  storeId,
+  item,
+  fetchItems,
+  favorites,
+}) => {
   const { id, name, image, description, quantity, minQuantity } = item;
-  //use the get fav by id here , possibly better to store all favs in an array for the store too 
   const isFavorite = favorites && favorites.some((fav) => fav.itemId === id);
 
   return (
@@ -42,13 +49,13 @@ const CollapseItem: React.FC<CardProps> = ({ item, fetchItems, favorites }) => {
             <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
               <img src={image} />
             </div>
-            {/* <div>image link:{image}</div> */}
           </div>
           <p>{description}</p>
-          {/* <p>id: {id}</p> */}
           <p>quantity: {quantity}</p>
           <p>minimum quantity: {minQuantity} </p>
           <ItemsInterface
+            userId={userId}
+            storeId={storeId}
             item={item}
             fetchItems={fetchItems}
             favorites={favorites}
@@ -59,7 +66,12 @@ const CollapseItem: React.FC<CardProps> = ({ item, fetchItems, favorites }) => {
   );
 };
 
-const ItemsInterface: React.FC<CardProps> = ({ item, fetchItems }) => {
+const ItemsInterface: React.FC<CardProps> = ({
+  userId,
+  storeId,
+  item,
+  fetchItems,
+}) => {
   const { handleDeleteItem } = useAppProvider();
   const deleteItem = () => {
     if (!item) return;
@@ -95,7 +107,7 @@ const ItemsInterface: React.FC<CardProps> = ({ item, fetchItems }) => {
             </button>
             <button
               className="btn btn-success btn-sm min-w-16"
-              onMouseDown={() => toggleFavorite(item!.id!)}
+              onMouseDown={() => toggleFavorite(userId, storeId, item!.id!)}
             >
               Fav
             </button>
@@ -135,15 +147,17 @@ export const Details = () => {
       }
     }
   };
-  const fetchFavorites = async () => {
-    console.log({ fetchFavorites: "currently under construction standby" });
-    // const favorites = await getFavoritesFromDB();
-    // if (favorites) setFavoriteItems(favorites);
+  const fetchFavorites = async (userId: string, storeId: string) => {
+    // console.log({ fetchFavorites: "currently under construction standby" });
+    const favorites = await getFavoritesFromDB(userId, storeId);
+    if (favorites) setFavoriteItems(favorites);
   };
 
   useEffect(() => {
     fetchItems();
-    fetchFavorites();
+    if (user && user.userInformation.id && storeId) {
+      fetchFavorites(user.userInformation.id, storeId);
+    }
   }, [stores, storeId, user]);
 
   return (
@@ -163,6 +177,8 @@ export const Details = () => {
               return (
                 <CollapseItem
                   key={i}
+                  userId={user?.userInformation.id ?? ""}
+                  storeId={storeId!}
                   item={item}
                   fetchItems={fetchItems}
                   favorites={favoriteItems}
