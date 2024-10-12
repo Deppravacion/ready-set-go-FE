@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuthProvider } from "../providers/AuthContext";
 import { useAppProvider } from "../providers/AppContext";
 import { FavoritesType, ItemsType } from "../types/AppTypes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   getItemsByStoreId,
   increaseItemQuantity,
@@ -67,10 +67,11 @@ const CollapseItem: React.FC<CardProps> = ({
 };
 
 const ItemsInterface: React.FC<CardProps> = ({
-  userId,
-  storeId,
+  // userId,
+  // storeId,
   item,
   fetchItems,
+  // favorites,
 }) => {
   const { handleDeleteItem } = useAppProvider();
   const deleteItem = () => {
@@ -79,6 +80,7 @@ const ItemsInterface: React.FC<CardProps> = ({
     handleDeleteItem(item.id);
     fetchItems();
   };
+  // console.log(favorites);
 
   return (
     <>
@@ -107,7 +109,8 @@ const ItemsInterface: React.FC<CardProps> = ({
             </button>
             <button
               className="btn btn-success btn-sm min-w-16"
-              onMouseDown={() => toggleFavorite(userId, storeId, item!.id!)}
+              onMouseDown={() => toggleFavorite(item!.id!)}
+              // onMouseDown={() => toggleFavorite(userId, storeId, item!.id!)}
             >
               Fav
             </button>
@@ -126,6 +129,8 @@ export const Details = () => {
   const [storeItems, setStoreItems] = useState<ItemsType[]>();
   const [favoriteItems, setFavoriteItems] = useState<FavoritesType[]>();
   const storeName = stores?.find((store) => store.id === storeId)?.name;
+  const prevFavoriteItemsRef = useRef(favoriteItems);
+  const isInitialMount = useRef(true);
 
   // const fetchItems = async () => {
   //   if (user && storeId) {
@@ -140,7 +145,7 @@ export const Details = () => {
     if (user && storeId) {
       const userId = user.userInformation.id;
       if (userId && storeId) {
-        const items = await getItemsByStoreId(userId, storeId);
+        const items = await getItemsByStoreId(storeId);
         if (items) {
           setStoreItems(items);
         }
@@ -148,17 +153,31 @@ export const Details = () => {
     }
   };
   const fetchFavorites = async (userId: string, storeId: string) => {
-    // console.log({ fetchFavorites: "currently under construction standby" });
     const favorites = await getFavoritesFromDB(userId, storeId);
     if (favorites) setFavoriteItems(favorites);
   };
 
   useEffect(() => {
     fetchItems();
+  });
+  useEffect(() => {
     if (user && user.userInformation.id && storeId) {
       fetchFavorites(user.userInformation.id, storeId);
     }
-  }, [stores, storeId, user]);
+  }, [user, storeId]);
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      if (prevFavoriteItemsRef.current !== favoriteItems) {
+        if (user && user.userInformation.id && storeId) {
+          fetchFavorites(user.userInformation.id, storeId);
+        }
+        prevFavoriteItemsRef.current = favoriteItems;
+      }
+    }
+  }, []);
 
   return (
     <>
