@@ -35,7 +35,7 @@ export const createFavorite = async (
     const favorite = {
       itemId: itemId,
     };
-    return await fetch(`http://localhost:3000/items/${itemId}/favorites`, {
+    return await fetch(`http://localhost:3000/items/${itemId}/favorite`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
