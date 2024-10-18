@@ -66,9 +66,56 @@ const CollapseItem: React.FC<CardProps> = ({
   );
 };
 
+// const ItemsInterface: React.FC<CardProps> = ({ item, fetchItems }) => {
+//   const { handleDeleteItem } = useAppProvider();
+//   const deleteItem = () => {
+//     if (!item) return;
+//     if (!item.id) return;
+//     handleDeleteItem(item.id);
+//     fetchItems();
+//   };
+//   // console.log(favorites);
+
+//   return (
+//     <>
+//       {item && item.id && (
+//         <>
+//           <div className="flex  gap-1 flex-col justify-center text-2xl mb-1 p-4">
+//             <button
+//               className="btn btn-info flex btn-sm min-w-16 text-2xl items-center leading-none"
+//               onMouseDown={() => increaseItemQuantity(item!.id!)}
+//             >
+//               +
+//             </button>
+//             <button
+//               className="btn  btn-warning btn-sm min-w-16 text-2xl items-center leading-none"
+//               onMouseDown={() => decreaseItemQuantity(item!.id!)}
+//             >
+//               -
+//             </button>
+//           </div>
+//           <div className="flex justify-around">
+//             <button
+//               className="btn btn-error btn-sm min-w-16"
+//               onMouseDown={() => deleteItem()}
+//             >
+//               Delete
+//             </button>
+//             <button
+//               className="btn btn-success btn-sm min-w-16"
+//               onMouseDown={() => toggleFavorite(item!.id!)}
+//               // onMouseDown={() => toggleFavorite(userId, storeId, item!.id!)}
+//             >
+//               Fav
+//             </button>
+//           </div>
+//         </>
+//       )}
+//     </>
+//   );
+// };
+
 const ItemsInterface: React.FC<CardProps> = ({
-  // userId,
-  // storeId,
   item,
   fetchItems,
   // favorites,
@@ -80,7 +127,13 @@ const ItemsInterface: React.FC<CardProps> = ({
     handleDeleteItem(item.id);
     fetchItems();
   };
-  // console.log(favorites);
+
+  const handleToggleFavorite = async () => {
+    if (item.id) {
+      await toggleFavorite(item.id);
+    }
+    fetchItems();
+  };
 
   return (
     <>
@@ -89,13 +142,13 @@ const ItemsInterface: React.FC<CardProps> = ({
           <div className="flex  gap-1 flex-col justify-center text-2xl mb-1 p-4">
             <button
               className="btn btn-info flex btn-sm min-w-16 text-2xl items-center leading-none"
-              onMouseDown={() => increaseItemQuantity(item!.id!)}
+              onMouseDown={() => item.id && increaseItemQuantity(item.id)}
             >
               +
             </button>
             <button
               className="btn  btn-warning btn-sm min-w-16 text-2xl items-center leading-none"
-              onMouseDown={() => decreaseItemQuantity(item!.id!)}
+              onMouseDown={() => item.id && decreaseItemQuantity(item.id)}
             >
               -
             </button>
@@ -109,8 +162,7 @@ const ItemsInterface: React.FC<CardProps> = ({
             </button>
             <button
               className="btn btn-success btn-sm min-w-16"
-              onMouseDown={() => toggleFavorite(item!.id!)}
-              // onMouseDown={() => toggleFavorite(userId, storeId, item!.id!)}
+              onMouseDown={handleToggleFavorite}
             >
               Fav
             </button>
@@ -132,15 +184,6 @@ export const Details = () => {
   const prevFavoriteItemsRef = useRef(favoriteItems);
   const isInitialMount = useRef(true);
 
-  // const fetchItems = async () => {
-  //   if (user && storeId) {
-  //     const userId = user.userInformation.id;
-  //     const items = await getItemsByStoreId(userId, storeId);
-  //     if (items) {
-  //       setStoreItems(items);
-  //     }
-  //   }
-  // };
   const fetchItems = async () => {
     if (user && storeId) {
       const userId = user.userInformation.id;
@@ -154,12 +197,14 @@ export const Details = () => {
   };
   const fetchFavorites = async (userId: string, storeId: string) => {
     const favorites = await getFavoritesFromDB(userId, storeId);
-    if (favorites) setFavoriteItems(favorites);
+    setFavoriteItems(favorites);
+    return favorites;
   };
 
   useEffect(() => {
     fetchItems();
   });
+
   useEffect(() => {
     if (user && user.userInformation.id && storeId) {
       fetchFavorites(user.userInformation.id, storeId);

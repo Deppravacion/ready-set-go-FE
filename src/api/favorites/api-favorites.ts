@@ -81,5 +81,6 @@ export const toggleFavorite = async (itemId: string) => {
   } catch (error) {
     console.error(error);
     toast.error("Error toggling favorite");
+    return [];
   }
 };
