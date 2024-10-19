@@ -42,14 +42,12 @@ export const toggleFavorite = async (itemId: string) => {
     console.log({ deleteFavID: favId });
     return await fetch(`http://localhost:3000/favorite/${favId}`, {
       method: "DELETE",
-    }).then(() => console.log("it should be deleted"));
+    });
   };
   try {
     if (favorites.length === 0) {
-      console.log("no favorites");
       return await createFavorite(itemId);
     } else {
-      console.log({ toggleFavs: favorites[0] });
       return await deleteFavoriteById(favorites[0].id.toString());
     }
   } catch (error) {
