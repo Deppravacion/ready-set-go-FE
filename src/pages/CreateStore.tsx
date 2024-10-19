@@ -11,7 +11,7 @@ export const CreateStore = () => {
   const navigate = useNavigate();
   const { handleAddStore, userTheme } = useAppProvider();
   const [name, setName] = useState<string>("");
-  const userId = user?.id || "";
+  const userId = user?.userInformation.id || "";
 
   const handleSubmit = async (
     e: FormEvent<HTMLFormElement>,
@@ -21,7 +21,9 @@ export const CreateStore = () => {
     console.log("name", name, "ID", userId);
     await handleAddStore(name, userId).then(() => {
       setName(name);
-      console.log("submitted");
+      console.log({
+        addStoreMessage: `added a store with name: "${name}" & userId: ${userId}`,
+      });
     });
     navigate("/home");
   };
@@ -30,41 +32,41 @@ export const CreateStore = () => {
     <>
       <div
         data-theme={userTheme}
-        className='card w-96 bg-base-100 shadow-xl m-auto p-4'
+        className="card w-96 bg-base-100 shadow-xl m-auto p-4"
       >
-        <div className='container mx-auto p-10 bg-cyan-600 rounded-md'>
-          <h2 className='text-lg'>{title}</h2>
-          <h2 className='text-md'>{subTitle}</h2>
+        <div className="container mx-auto p-10 bg-cyan-600 rounded-md">
+          <h2 className="text-lg">{title}</h2>
+          <h2 className="text-md">{subTitle}</h2>
         </div>
-        <div className='card-body'>
+        <div className="card-body">
           {/* ******** */}
           <form
-            className='card-body'
+            className="card-body"
             onSubmit={(e: FormEvent<HTMLFormElement>) =>
               handleSubmit(e, { name: name, userId: userId })
             }
           >
-            <div className='form-control'>
-              <label className='label '>
+            <div className="form-control">
+              <label className="label ">
                 <input
-                  type='text'
-                  placeholder='name'
-                  className='input input-bordered max-w-full'
+                  type="text"
+                  placeholder="name"
+                  className="input input-bordered max-w-full"
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setName(e.target.value)
                   }
                   required
                 />
               </label>
-              <div className='form-control mt-6'>
-                <button className='btn btn-primary'>Next</button>
+              <div className="form-control mt-6">
+                <button className="btn btn-primary">Next</button>
               </div>
             </div>
           </form>
         </div>
-        <div className='flex justify-around'>
+        <div className="flex justify-around">
           <button
-            className='btn btn-outline rounded-none btn-warning px-2'
+            className="btn btn-outline rounded-none btn-warning px-2"
             onClick={() => {
               handleLogout();
               navigate("/signin");
@@ -73,7 +75,7 @@ export const CreateStore = () => {
             Logout
           </button>
           <button
-            className='btn btn-outline rounded-none btn-success'
+            className="btn btn-outline rounded-none btn-success"
             onClick={() => navigate(-1)}
           >
             Back

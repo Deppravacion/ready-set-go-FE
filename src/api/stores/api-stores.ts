@@ -18,7 +18,7 @@ export const getUserStores = async (userId: string) => {
 };
 
 export const createStore = async (store: StoresType) => {
-  const response = await fetch("http://localhost:3004/stores", {
+  const response = await fetch("http://localhost:3000/stores", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
