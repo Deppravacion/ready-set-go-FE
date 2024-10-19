@@ -32,7 +32,7 @@ export const createStore = async (store: StoresType) => {
 };
 
 export const deleteStore = async (id: string) => {
-  return await fetch(`http://localhost:3004/stores/${id}`, {
+  return await fetch(`http://localhost:3000/stores/${id}`, {
     method: "DELETE",
   });
 };
