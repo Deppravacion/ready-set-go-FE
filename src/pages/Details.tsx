@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuthProvider } from "../providers/AuthContext";
 import { useAppProvider } from "../providers/AppContext";
 import { FavoritesType, ItemsType } from "../types/AppTypes";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getItemsByStoreId,
   increaseItemQuantity,
@@ -21,6 +21,7 @@ type CardProps = {
   item: ItemsType;
   fetchItems: () => void;
   favorites?: FavoritesType[];
+  fetchFavorites: () => void;
 };
 
 const CollapseItem: React.FC<CardProps> = ({
@@ -28,6 +29,7 @@ const CollapseItem: React.FC<CardProps> = ({
   storeId,
   item,
   fetchItems,
+  fetchFavorites,
   favorites,
 }) => {
   const { id, name, image, description, quantity, minQuantity } = item;
@@ -58,6 +60,7 @@ const CollapseItem: React.FC<CardProps> = ({
             storeId={storeId}
             item={item}
             fetchItems={fetchItems}
+            fetchFavorites={fetchFavorites}
             favorites={favorites}
           />
         </div>
@@ -66,59 +69,10 @@ const CollapseItem: React.FC<CardProps> = ({
   );
 };
 
-// const ItemsInterface: React.FC<CardProps> = ({ item, fetchItems }) => {
-//   const { handleDeleteItem } = useAppProvider();
-//   const deleteItem = () => {
-//     if (!item) return;
-//     if (!item.id) return;
-//     handleDeleteItem(item.id);
-//     fetchItems();
-//   };
-//   // console.log(favorites);
-
-//   return (
-//     <>
-//       {item && item.id && (
-//         <>
-//           <div className="flex  gap-1 flex-col justify-center text-2xl mb-1 p-4">
-//             <button
-//               className="btn btn-info flex btn-sm min-w-16 text-2xl items-center leading-none"
-//               onMouseDown={() => increaseItemQuantity(item!.id!)}
-//             >
-//               +
-//             </button>
-//             <button
-//               className="btn  btn-warning btn-sm min-w-16 text-2xl items-center leading-none"
-//               onMouseDown={() => decreaseItemQuantity(item!.id!)}
-//             >
-//               -
-//             </button>
-//           </div>
-//           <div className="flex justify-around">
-//             <button
-//               className="btn btn-error btn-sm min-w-16"
-//               onMouseDown={() => deleteItem()}
-//             >
-//               Delete
-//             </button>
-//             <button
-//               className="btn btn-success btn-sm min-w-16"
-//               onMouseDown={() => toggleFavorite(item!.id!)}
-//               // onMouseDown={() => toggleFavorite(userId, storeId, item!.id!)}
-//             >
-//               Fav
-//             </button>
-//           </div>
-//         </>
-//       )}
-//     </>
-//   );
-// };
-
 const ItemsInterface: React.FC<CardProps> = ({
   item,
   fetchItems,
-  // favorites,
+  fetchFavorites,
 }) => {
   const { handleDeleteItem } = useAppProvider();
   const deleteItem = () => {
@@ -132,7 +86,7 @@ const ItemsInterface: React.FC<CardProps> = ({
     if (item.id) {
       await toggleFavorite(item.id);
     }
-    fetchItems();
+    fetchFavorites();
   };
 
   return (
@@ -181,8 +135,6 @@ export const Details = () => {
   const [storeItems, setStoreItems] = useState<ItemsType[]>();
   const [favoriteItems, setFavoriteItems] = useState<FavoritesType[]>();
   const storeName = stores?.find((store) => store.id === storeId)?.name;
-  const prevFavoriteItemsRef = useRef(favoriteItems);
-  const isInitialMount = useRef(true);
 
   const fetchItems = async () => {
     if (user && storeId) {
@@ -195,34 +147,22 @@ export const Details = () => {
       }
     }
   };
-  const fetchFavorites = async (userId: string, storeId: string) => {
-    const favorites = await getFavoritesFromDB(userId, storeId);
-    setFavoriteItems(favorites);
-    return favorites;
+  const fetchFavorites = async () => {
+    if (user && storeId) {
+      const favorites = await getFavoritesFromDB(
+        user.userInformation.id!,
+        storeId!
+      );
+      setFavoriteItems(favorites);
+    }
   };
 
   useEffect(() => {
-    fetchItems();
-  });
-
-  useEffect(() => {
-    if (user && user.userInformation.id && storeId) {
-      fetchFavorites(user.userInformation.id, storeId);
+    if (user && storeId) {
+      fetchItems();
+      fetchFavorites();
     }
   }, [user, storeId]);
-
-  useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-    } else {
-      if (prevFavoriteItemsRef.current !== favoriteItems) {
-        if (user && user.userInformation.id && storeId) {
-          fetchFavorites(user.userInformation.id, storeId);
-        }
-        prevFavoriteItemsRef.current = favoriteItems;
-      }
-    }
-  }, []);
 
   return (
     <>
@@ -245,6 +185,7 @@ export const Details = () => {
                   storeId={storeId!}
                   item={item}
                   fetchItems={fetchItems}
+                  fetchFavorites={fetchFavorites}
                   favorites={favoriteItems}
                 />
               );
@@ -268,7 +209,6 @@ export const Details = () => {
           >
             Home
           </button>
-          {/* Open the modal using document.getElementById('ID').showModal() method */}
           <button
             className="btn btn-outline rounded-none btn-info"
             onClick={() => navigate(`/createitem/${storeId}`)}
