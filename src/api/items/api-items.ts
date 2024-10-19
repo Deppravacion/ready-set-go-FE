@@ -3,19 +3,16 @@ import { ItemsType } from "../../types/AppTypes";
 
 export const getItemsByStoreId = async (storeId: string) => {
   // export const getItemsByStoreId = async (userId: string, storeId: string) => {
-  return await fetch(
-    `http://localhost:3000/stores/${storeId}/items`
-    // `http://localhost:3000/users/${userId}/stores/${storeId}/items`
-  ).then((response) => response.json());
+  return await fetch(`http://localhost:3000/stores/${storeId}/items`).then(
+    (response) => response.json()
+  );
 };
 
 //under construction
 export const getItemById = async (itemId: string) => {
-  const userId = "default to be replaced"; // grab this info but do not require it as arg if possible
-  // const storeId = "default to be replaced";
+  const userId = "default to be replaced";
   try {
     const items = await getItemsByStoreId(userId);
-    // const items = await getItemsByStoreId(userId, storeId);
     return items.filter((item: ItemsType) => item.id === itemId);
   } catch (error) {
     console.error(error);
