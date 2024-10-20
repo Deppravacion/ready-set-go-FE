@@ -4,7 +4,6 @@ import { useAppProvider } from "../providers/AppContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ThemeToggler } from "../theme/ThemeToggler";
-// import { getUserStores } from "../api/stores/api-stores";
 import { getItemsByStoreId } from "../api/items/api-items";
 
 type StoreCardProps = {
@@ -12,19 +11,25 @@ type StoreCardProps = {
 };
 
 const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
-  const [items, setItems] = useState<ItemsType[] | null>(null);
-  const { stores, userTheme } = useAppProvider();
+  const [storeItems, setStoreItems] = useState<Record<string, ItemsType[]>>({});
+  const { stores, userTheme, handleDeleteUserStore } = useAppProvider();
   const navigate = useNavigate();
-  const { user } = useAuthProvider();
 
   useEffect(() => {
     if (!stores) return;
-    if (!stores[0].id) return;
-    const userId = user?.userInformation.id ?? "";
 
-    getItemsByStoreId(userId, stores[0].id).then((storeItems: ItemsType[]) => {
-      setItems(storeItems);
-    });
+    const fetchItems = async () => {
+      const itemsMap: Record<string, ItemsType[]> = {};
+      for (const store of stores) {
+        if (store.id) {
+          const items = await getItemsByStoreId(store.id);
+          itemsMap[store.id] = items;
+        }
+      }
+      setStoreItems(itemsMap);
+    };
+
+    fetchItems();
   }, [stores, userTheme]);
 
   return (
@@ -33,8 +38,10 @@ const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
         <h2 className="text-lg">{store.name}</h2>
       </div>
       <div className="card-body bg-base-200">
-        {items &&
-          items.map((item, i) => {
+        {store.id &&
+          storeItems[store.id] &&
+          Array.isArray(storeItems[store.id]) &&
+          storeItems[store.id].map((item, i) => {
             return (
               <div key={i} className="text-center">
                 {item.name}
@@ -47,6 +54,12 @@ const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
         onClick={() => navigate(`/details/${store.id}`)}
       >
         expand
+      </button>
+      <button
+        className="btn rounded-none bg-error text-info-conent"
+        onClick={() => handleDeleteUserStore(store.id as string)}
+      >
+        delete
       </button>
     </div>
   );

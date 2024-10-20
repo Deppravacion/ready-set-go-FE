@@ -143,6 +143,7 @@ export const Details = () => {
         const items = await getItemsByStoreId(storeId);
         if (items) {
           setStoreItems(items);
+          console.log({ setStoreItems: items });
         }
       }
     }

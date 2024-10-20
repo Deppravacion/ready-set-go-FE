@@ -1,7 +1,11 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { AppContextTypes, ItemsType, StoresType } from "../types/AppTypes";
 import { toast } from "react-toastify";
-import { createStore, getUserStores } from "../api/stores/api-stores";
+import {
+  createStore,
+  deleteStore,
+  getUserStores,
+} from "../api/stores/api-stores";
 import { useAuthProvider } from "./AuthContext";
 import {
   createItem,
@@ -25,13 +29,22 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
     }
   };
 
+  const handleDeleteUserStore = async (storeId: string) => {
+    try {
+      await deleteStore(storeId);
+      console.log({ deletingStore: `storeId: ${storeId}` });
+    } catch (error) {
+      console.error(error);
+      toast.error("Error creating store");
+    }
+  };
+
   const handleAddStore = async (name: string, userId: string) => {
     const newStore = {
       name,
       userId: userId.toString(),
     };
     try {
-      // console.log({ handAddStore: newStore });
       return createStore(newStore);
     } catch (error) {
       console.error(error);
@@ -90,6 +103,7 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
         setStores,
         handleAddStore,
         handleGetUserStores,
+        handleDeleteUserStore,
         handleCreateItem,
         handleDeleteItem,
         userTheme,

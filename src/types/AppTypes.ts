@@ -6,6 +6,7 @@ export type AppContextTypes = {
     userId: string
   ) => Promise<boolean | undefined>;
   handleGetUserStores: (userId: string) => Promise<void>;
+  handleDeleteUserStore: (storeId: string) => Promise<void>;
   handleCreateItem: (
     item: ItemsType,
     storeId: string
