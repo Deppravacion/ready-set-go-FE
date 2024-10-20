@@ -21,9 +21,9 @@ export const CreateStore = () => {
     console.log("name", name, "ID", userId);
     await handleAddStore(name, userId).then(() => {
       setName(name);
-      console.log({
-        addStoreMessage: `added a store with name: "${name}" & userId: ${userId}`,
-      });
+      // console.log({
+      //   addStoreMessage: `added a store with name: "${name}" & userId: ${userId}`,
+      // });
     });
     navigate("/home");
   };

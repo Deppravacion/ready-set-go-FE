@@ -28,9 +28,10 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
   const handleAddStore = async (name: string, userId: string) => {
     const newStore = {
       name,
-      userId,
+      userId: userId.toString(),
     };
     try {
+      // console.log({ handAddStore: newStore });
       return createStore(newStore);
     } catch (error) {
       console.error(error);
@@ -41,9 +42,10 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
   const handleCreateItem = async (item: ItemsType) => {
     console.log("handleCreateItem  under construction");
     // const items = await getItemsByStoreId(storeId);
-    const userId = "required: find the userId";
+    // const userId = "required: find the userId";
     const storeId = "required: find the userId";
-    const items = await getItemsByStoreId(userId, storeId);
+    const items = await getItemsByStoreId(storeId);
+    // const items = await getItemsByStoreId(userId, storeId);
     if (
       items.some(
         (elm: ItemsType) => elm.name.toLowerCase() === item.name.toLowerCase()
