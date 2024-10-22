@@ -64,6 +64,8 @@ const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
   );
 };
 
+// need to set teh defaulStoreCard to appear again if all stores have been deleted
+
 const defaultStoreCardData = {
   store: {
     id: "nan",
