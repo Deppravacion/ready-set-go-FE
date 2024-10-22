@@ -31,11 +31,6 @@ const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
     fetchItems();
   }, [stores, userTheme]);
 
-  // const deleteUserStore = (storeId: string) => {
-  //   handleDeleteUserStore(storeId as string);
-  //   fetchItems();
-  // };
-
   return (
     <div data-theme={userTheme} className="card shadow-sm bg-neutral p-10">
       <div className="container mx-auto p-1 bg-base-300 rounded-none">
@@ -107,7 +102,6 @@ export const Home = () => {
             stores.map((store) => <StoreCard store={store} key={store.id} />)
           ) : (
             <StoreCard store={stores || defaultStoreCardData.store} />
-            // <StoreCard store={defaultStoreCardData.store} />
           )}
         </div>
         <div className="flex justify-between my-[10px]">
