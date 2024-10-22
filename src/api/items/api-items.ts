@@ -69,7 +69,7 @@ export const decreaseItemQuantity = async (itemId: string) => {
 };
 
 export const deleteItem = async (id: string) => {
-  return await fetch(`http://localhost:3004/items/${id}`, {
+  return await fetch(`http://localhost:3000/items/${id}`, {
     method: "DELETE",
   });
 };

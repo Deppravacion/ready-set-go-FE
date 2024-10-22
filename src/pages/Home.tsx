@@ -15,22 +15,26 @@ const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
   const { stores, userTheme, handleDeleteUserStore } = useAppProvider();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchItems = async () => {
     if (!stores) return;
-
-    const fetchItems = async () => {
-      const itemsMap: Record<string, ItemsType[]> = {};
-      for (const store of stores) {
-        if (store.id) {
-          const items = await getItemsByStoreId(store.id);
-          itemsMap[store.id] = items;
-        }
+    const itemsMap: Record<string, ItemsType[]> = {};
+    for (const store of stores) {
+      if (store.id) {
+        const items = await getItemsByStoreId(store.id);
+        itemsMap[store.id] = items;
       }
-      setStoreItems(itemsMap);
-    };
+    }
+    setStoreItems(itemsMap);
+  };
 
+  useEffect(() => {
     fetchItems();
   }, [stores, userTheme]);
+
+  // const deleteUserStore = (storeId: string) => {
+  //   handleDeleteUserStore(storeId as string);
+  //   fetchItems();
+  // };
 
   return (
     <div data-theme={userTheme} className="card shadow-sm bg-neutral p-10">
@@ -86,7 +90,7 @@ export const Home = () => {
     if (!user) return;
     if (!user.userInformation.id) return;
     handleGetUserStores(user.userInformation.id.toString());
-  }, [user]);
+  }, [user, stores]);
 
   return (
     <>
