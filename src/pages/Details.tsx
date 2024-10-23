@@ -177,20 +177,21 @@ export const Details = () => {
         </div>
         <div className="card-body">
           {/* ******** */}
-          {storeItems &&
-            storeItems.map((item, i) => {
-              return (
-                <CollapseItem
-                  key={i}
-                  userId={user?.userInformation.id ?? ""}
-                  storeId={storeId!}
-                  item={item}
-                  fetchItems={fetchItems}
-                  fetchFavorites={fetchFavorites}
-                  favorites={favoriteItems}
-                />
-              );
-            })}
+          {Array.isArray(storeItems) && storeItems.length > 0 ? (
+            storeItems.map((item, i) => (
+              <CollapseItem
+                key={i}
+                userId={user?.userInformation.id ?? ""}
+                storeId={storeId!}
+                item={item}
+                fetchItems={fetchItems}
+                fetchFavorites={fetchFavorites}
+                favorites={favoriteItems}
+              />
+            ))
+          ) : (
+            <div>No Items - Add your first item</div>
+          )}
           {/* ******** */}
         </div>
 

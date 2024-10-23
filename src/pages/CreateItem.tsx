@@ -47,28 +47,28 @@ export const CreateItem = () => {
     <>
       <div
         data-theme={userTheme}
-        className='card w-96 bg-base-100 shadow-xl m-auto p-4'
+        className="card w-96 bg-base-100 shadow-xl m-auto p-4"
       >
-        <div className='container mx-auto p-10 bg-cyan-600 rounded-md'>
-          <h2 className='text-lg'>{title}</h2>
-          <h2 className='text-md'>{subTitle}</h2>
+        <div className="container mx-auto p-10 bg-cyan-600 rounded-md">
+          <h2 className="text-lg">{title}</h2>
+          <h2 className="text-md">{subTitle}</h2>
         </div>
-        <div className='card-body'>
+        <div className="card-body">
           {/* ******** */}
           <form
-            className='card-body'
+            className="card-body"
             onSubmit={(e: FormEvent<HTMLFormElement>) =>
               handleSubmit(e, { item, storeId: storeId ?? "" })
             }
           >
-            <div className='form-control'>
+            <div className="form-control">
               {fields.map((field) => {
                 return (
-                  <label className='label ' key={field.name}>
+                  <label className="label " key={field.name}>
                     <input
-                      type='text'
+                      type="text"
                       placeholder={field.name}
-                      className='input input-bordered max-w-full'
+                      className="input input-bordered max-w-full"
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         setItem({ ...item, [field.name]: e.target.value })
                       }
@@ -77,15 +77,15 @@ export const CreateItem = () => {
                   </label>
                 );
               })}
-              <div className='form-control mt-6'>
-                <button className='btn btn-primary'>Next</button>
+              <div className="form-control mt-6">
+                <button className="btn btn-primary">Next</button>
               </div>
             </div>
           </form>
         </div>
-        <div className='flex justify-around'>
+        <div className="flex justify-around">
           <button
-            className='btn btn-outline rounded-none btn-warning px-2'
+            className="btn btn-outline rounded-none btn-warning px-2"
             onClick={() => {
               handleLogout();
               navigate("/signin");
@@ -94,7 +94,7 @@ export const CreateItem = () => {
             Logout
           </button>
           <button
-            className='btn btn-outline rounded-none btn-success'
+            className="btn btn-outline rounded-none btn-success"
             onClick={() => navigate(-1)}
           >
             Back

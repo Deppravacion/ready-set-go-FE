@@ -21,7 +21,7 @@ export const getItemById = async (itemId: string) => {
 };
 
 export const createItem = async (item: ItemsType) => {
-  return await fetch("http://localhost:3004/items", {
+  return await fetch("http://localhost:3000/items", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

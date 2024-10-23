@@ -52,19 +52,9 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
     }
   };
 
-  const handleCreateItem = async (item: ItemsType) => {
+  const handleCreateItem = async (item: ItemsType, storeId: string) => {
     console.log("handleCreateItem  under construction");
-    // const items = await getItemsByStoreId(storeId);
-    // const userId = "required: find the userId";
-    const storeId = "required: find the userId";
-    const items = await getItemsByStoreId(storeId);
-    // const items = await getItemsByStoreId(userId, storeId);
-    if (
-      items.some(
-        (elm: ItemsType) => elm.name.toLowerCase() === item.name.toLowerCase()
-      )
-    )
-      toast.error("Item already exists");
+
     try {
       const newItem = {
         name: item.name,
