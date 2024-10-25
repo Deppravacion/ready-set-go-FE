@@ -1,10 +1,11 @@
 import { toast } from "react-toastify";
 
 //get favs from a store
-export const getFavoritesFromDB = async (userId: string, storeId: string) => {
-  return await fetch(
-    `http://localhost:3000/users/${userId}/stores/${storeId}/favorites`
-  ).then((response) => response.json());
+export const getFavoritesFromDB = async (storeId: string) => {
+  // export const getFavoritesFromDB = async (userId: string, storeId: string) => {
+  return await fetch(`http://localhost:3000/stores/${storeId}/favorites`).then(
+    (response) => response.json()
+  );
 };
 
 //get Fav by favId
@@ -35,7 +36,7 @@ export const createFavorite = async (itemId: string) => {
   }
 };
 
-//toggle favs underContruction/ refactor
+//toggle favs underContruction/ refactor // seems to work mostly
 export const toggleFavorite = async (itemId: string) => {
   const favorites = await getFavoritesByItemId(itemId);
   const deleteFavoriteById = async (favId: string) => {
