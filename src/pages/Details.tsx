@@ -143,6 +143,7 @@ export const Details = () => {
         const items = await getItemsByStoreId(storeId);
         if (items) {
           setStoreItems(items);
+          console.log("Details-tsx below:");
           console.log({ setStoreItems: items });
         }
       }
@@ -151,9 +152,10 @@ export const Details = () => {
   const fetchFavorites = async () => {
     if (user && storeId) {
       const favorites = await getFavoritesFromDB(
-        user.userInformation.id!,
+        // user.userInformation.id!,
         storeId!
       );
+      console.log({ settingFav: favorites });
       setFavoriteItems(favorites);
     }
   };

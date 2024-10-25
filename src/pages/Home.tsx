@@ -2,7 +2,7 @@ import { ItemsType, StoresType } from "../types/AppTypes";
 import { useAuthProvider } from "../providers/AuthContext";
 import { useAppProvider } from "../providers/AppContext";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ThemeToggler } from "../theme/ThemeToggler";
 import { getItemsByStoreId } from "../api/items/api-items";
 
@@ -82,13 +82,16 @@ export const Home = () => {
   const subTitle: string = `${name}, welcome to your home page!`;
   const title: string = "Ready Set Go!";
   const navigate = useNavigate();
+  const renderCount = useRef(0);
+  renderCount.current += 1;
 
   useEffect(() => {
     if (!user) return;
     if (!user.userInformation.id) return;
     handleGetUserStores(user.userInformation.id.toString());
-  }, [user, stores]);
-
+    // }, [user, stores]);
+  }, [user]);
+  console.log(`Home component render count: ${renderCount.current}`);
   return (
     <>
       <div
