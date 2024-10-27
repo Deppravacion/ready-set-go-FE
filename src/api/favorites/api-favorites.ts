@@ -1,11 +1,16 @@
 import { toast } from "react-toastify";
 
 //get favs from a store
+
 export const getFavoritesFromDB = async (storeId: string) => {
-  // export const getFavoritesFromDB = async (userId: string, storeId: string) => {
-  return await fetch(`http://localhost:3000/stores/${storeId}/favorites`).then(
-    (response) => response.json()
+  const response = await fetch(
+    `http://localhost:3000/stores/${storeId}/favorites`
   );
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  const text = await response.text();
+  return text ? JSON.parse(text) : [];
 };
 
 //get Fav by favId
