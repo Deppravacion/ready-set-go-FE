@@ -36,15 +36,23 @@ export const createFavorite = async (itemId: string) => {
   }
 };
 
+//delete fav
+const deleteFavoriteById = async (favId: string) => {
+  console.log({ deleteFavID: favId });
+  const response = await fetch(`http://localhost:3000/favorite/${favId}`, {
+    method: "DELETE",
+  });
+  // if (!response.ok) {
+  //   throw new Error("Network response was not ok");
+  // }
+  const data = await response.json();
+  return data;
+};
+
 //toggle favs underContruction/ refactor // seems to work mostly
 export const toggleFavorite = async (itemId: string) => {
   const favorites = await getFavoritesByItemId(itemId);
-  const deleteFavoriteById = async (favId: string) => {
-    console.log({ deleteFavID: favId });
-    return await fetch(`http://localhost:3000/favorite/${favId}`, {
-      method: "DELETE",
-    });
-  };
+
   try {
     if (favorites.length === 0) {
       return await createFavorite(itemId);
@@ -54,6 +62,7 @@ export const toggleFavorite = async (itemId: string) => {
   } catch (error) {
     console.error(error);
     toast.error("Error toggling favorite");
-    return [];
+    // return [];
+    return null;
   }
 };

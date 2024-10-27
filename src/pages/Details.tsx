@@ -13,8 +13,6 @@ import {
   toggleFavorite,
 } from "../api/favorites/api-favorites";
 
-const subTitle: string = "Store details!";
-
 type CardProps = {
   userId: string;
   storeId: string;
@@ -33,7 +31,12 @@ const CollapseItem: React.FC<CardProps> = ({
   favorites,
 }) => {
   const { id, name, image, description, quantity, minQuantity } = item;
-  const isFavorite = favorites && favorites.some((fav) => fav.itemId === id);
+  // const isFavorite = favorites && favorites.some((fav) => fav.itemId === id);
+  const [isFavorite, setIsFavorite] = useState(false);
+  useEffect(() => {
+    console.log({ isFavoriteMessage: isFavorite });
+    setIsFavorite(!!(favorites && favorites.some((fav) => fav.itemId === id)));
+  }, [favorites, id]);
 
   return (
     <>
@@ -116,7 +119,8 @@ const ItemsInterface: React.FC<CardProps> = ({
             </button>
             <button
               className="btn btn-success btn-sm min-w-16"
-              onMouseDown={handleToggleFavorite}
+              onMouseDown={() => handleToggleFavorite()}
+              // onMouseDown={handleToggleFavorite}
             >
               Fav
             </button>
@@ -130,11 +134,10 @@ const ItemsInterface: React.FC<CardProps> = ({
 export const Details = () => {
   const navigate = useNavigate();
   const { handleLogout, user } = useAuthProvider();
-  const { stores, userTheme } = useAppProvider();
-  const { storeId } = useParams();
+  const { userTheme } = useAppProvider();
+  const { storeId, storeName } = useParams();
   const [storeItems, setStoreItems] = useState<ItemsType[]>();
   const [favoriteItems, setFavoriteItems] = useState<FavoritesType[]>();
-  const storeName = stores?.find((store) => store.id === storeId)?.name;
 
   const fetchItems = async () => {
     if (user && storeId) {
@@ -175,8 +178,9 @@ export const Details = () => {
       >
         <div className="container mx-auto p-10 bg-accent rounded-md ">
           <h2 className="text-lg">{storeName}</h2>
-          <h2 className="text-md">{`${subTitle} for the store: ${storeId}`}</h2>
+          <h2 className="text-md">{`Details for the store: ${storeName}`}</h2>
         </div>
+
         <div className="card-body">
           {/* ******** */}
           {Array.isArray(storeItems) && storeItems.length > 0 ? (

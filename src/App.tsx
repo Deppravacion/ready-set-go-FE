@@ -21,15 +21,19 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<PrivateRoutes />}>
-              <Route path='/createstore' element={<CreateStore />} />
-              <Route path='/createitem/:storeId' element={<CreateItem />} />
-              <Route path='/details/:storeId' element={<Details />} />
-              <Route path='/home' element={<Home />} />
+              <Route path="/createstore" element={<CreateStore />} />
+              <Route path="/createitem/:storeId" element={<CreateItem />} />
+              <Route
+                path="/details/:storeId/:storeName"
+                element={<Details />}
+              />
+
+              <Route path="/home" element={<Home />} />
             </Route>
-            <Route path='/signin' element={<SignIn />} />
-            <Route path='/signup' element={<SignUp />} />
-            <Route path='/howitworks' element={<HowItWorks />} />
-            <Route index path='/' element={<Navigate to={"/signin"} />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/howitworks" element={<HowItWorks />} />
+            <Route index path="/" element={<Navigate to={"/signin"} />} />
           </Routes>
           <ToastContainer />
         </BrowserRouter>
