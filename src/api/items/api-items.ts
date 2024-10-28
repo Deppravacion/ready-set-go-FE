@@ -10,10 +10,10 @@ export const getItemsByStoreId = async (storeId: string) => {
 
 //under construction
 export const getItemById = async (itemId: string) => {
-  const userId = "default to be replaced";
   try {
-    const items = await getItemsByStoreId(userId);
-    return items.filter((item: ItemsType) => item.id === itemId);
+    return await fetch(`http://localhost:3000/items/${itemId}`).then(
+      (response) => response.json()
+    );
   } catch (error) {
     console.error(error);
     toast.error("Error fetching item");
@@ -32,9 +32,10 @@ export const createItem = async (item: ItemsType) => {
 
 export const increaseItemQuantity = async (itemId: string) => {
   try {
-    const item = await getItemById(itemId);
-    const newQuantity = Number(item[0].quantity) + 1;
-    return await fetch(`http://localhost:3004/items/${itemId}`, {
+    const item: ItemsType = await getItemById(itemId);
+
+    const newQuantity = Number(item.quantity) + 1;
+    return await fetch(`http://localhost:3000/items/${itemId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -49,10 +50,10 @@ export const increaseItemQuantity = async (itemId: string) => {
 
 export const decreaseItemQuantity = async (itemId: string) => {
   try {
-    const item = await getItemById(itemId);
-    const newQuantity = Number(item[0].quantity) - 1;
+    const item: ItemsType = await getItemById(itemId);
+    const newQuantity = Number(item.quantity) - 1;
     if (newQuantity >= 0) {
-      return await fetch(`http://localhost:3004/items/${itemId}`, {
+      return await fetch(`http://localhost:3000/items/${itemId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

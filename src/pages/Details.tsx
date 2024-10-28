@@ -4,9 +4,9 @@ import { useAppProvider } from "../providers/AppContext";
 import { FavoritesType, ItemsType } from "../types/AppTypes";
 import { useEffect, useState } from "react";
 import {
+  decreaseItemQuantity,
   getItemsByStoreId,
   increaseItemQuantity,
-  decreaseItemQuantity,
 } from "../api/items/api-items";
 import {
   getFavoritesFromDB,
@@ -78,6 +78,16 @@ const ItemsInterface: React.FC<CardProps> = ({
   fetchFavorites,
 }) => {
   const { handleDeleteItem } = useAppProvider();
+  const handleItemQuantityUp = async (item: ItemsType) => {
+    if (item && item.id) {
+      return await increaseItemQuantity(item.id).then(() => fetchItems());
+    }
+  };
+  const handleItemQuantityDown = async (item: ItemsType) => {
+    if (item && item.id) {
+      return await decreaseItemQuantity(item.id).then(() => fetchItems());
+    }
+  };
   const deleteItem = () => {
     if (!item) return;
     if (!item.id) return;
@@ -98,13 +108,13 @@ const ItemsInterface: React.FC<CardProps> = ({
           <div className="flex  gap-1 flex-col justify-center text-2xl mb-1 p-4">
             <button
               className="btn btn-info flex btn-sm min-w-16 text-2xl items-center leading-none"
-              onMouseDown={() => item.id && increaseItemQuantity(item.id)}
+              onMouseDown={() => handleItemQuantityUp(item)}
             >
               +
             </button>
             <button
               className="btn  btn-warning btn-sm min-w-16 text-2xl items-center leading-none"
-              onMouseDown={() => item.id && decreaseItemQuantity(item.id)}
+              onMouseDown={() => handleItemQuantityDown(item)}
             >
               -
             </button>
