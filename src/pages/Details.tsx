@@ -81,8 +81,7 @@ const ItemsInterface: React.FC<CardProps> = ({
   const deleteItem = () => {
     if (!item) return;
     if (!item.id) return;
-    handleDeleteItem(item.id);
-    fetchItems();
+    handleDeleteItem(item.id).then(() => fetchItems());
   };
 
   const handleToggleFavorite = async () => {

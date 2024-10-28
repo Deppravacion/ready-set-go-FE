@@ -12,8 +12,14 @@ type StoreCardProps = {
 
 const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
   const [storeItems, setStoreItems] = useState<Record<string, ItemsType[]>>({});
-  const { stores, userTheme, handleDeleteUserStore } = useAppProvider();
+  const { stores, userTheme, handleDeleteUserStore, handleGetUserStores } =
+    useAppProvider();
+  const userIdRef = useRef("");
   const navigate = useNavigate();
+  const { user } = useAuthProvider();
+  if (user && user.userInformation && user.userInformation.id) {
+    userIdRef.current = user.userInformation.id;
+  }
 
   const fetchItems = async () => {
     if (!stores) return;
@@ -57,7 +63,12 @@ const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
       </button>
       <button
         className="btn rounded-none bg-error text-info-conent"
-        onClick={() => handleDeleteUserStore(store.id as string)}
+        onClick={() =>
+          handleDeleteUserStore(store.id as string).then(() =>
+            handleGetUserStores(userIdRef.current)
+          )
+        }
+        // onClick={() => handleDeleteUserStore(store.id as string)}
       >
         delete
       </button>
@@ -77,9 +88,10 @@ const defaultStoreCardData = {
 
 export const Home = () => {
   const { handleLogout, user } = useAuthProvider();
-  const { handleGetUserStores, userTheme } = useAppProvider();
-  const { stores } = useAppProvider();
+  const { handleGetUserStores, userTheme, stores } = useAppProvider();
+  // const { stores } = useAppProvider();
   const name = user?.userInformation.name;
+
   const subTitle: string = `${name}, welcome to your home page!`;
   const title: string = "Ready Set Go!";
   const navigate = useNavigate();
