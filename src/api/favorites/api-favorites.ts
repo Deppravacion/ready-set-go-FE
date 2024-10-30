@@ -47,14 +47,11 @@ const deleteFavoriteById = async (favId: string) => {
   const response = await fetch(`http://localhost:3000/favorite/${favId}`, {
     method: "DELETE",
   });
-  // if (!response.ok) {
-  //   throw new Error("Network response was not ok");
-  // }
   const data = await response.json();
   return data;
 };
 
-//toggle favs underContruction/ refactor // seems to work mostly
+//toggle favs
 export const toggleFavorite = async (itemId: string) => {
   const favorites = await getFavoritesByItemId(itemId);
 
@@ -67,7 +64,6 @@ export const toggleFavorite = async (itemId: string) => {
   } catch (error) {
     console.error(error);
     toast.error("Error toggling favorite");
-    // return [];
     return null;
   }
 };

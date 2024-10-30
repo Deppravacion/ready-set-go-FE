@@ -31,7 +31,6 @@ const CollapseItem: React.FC<CardProps> = ({
   favorites,
 }) => {
   const { id, name, image, description, quantity, minQuantity } = item;
-  // const isFavorite = favorites && favorites.some((fav) => fav.itemId === id);
   const [isFavorite, setIsFavorite] = useState(false);
   useEffect(() => {
     console.log({ isFavoriteMessage: isFavorite });
@@ -129,7 +128,6 @@ const ItemsInterface: React.FC<CardProps> = ({
             <button
               className="btn btn-success btn-sm min-w-16"
               onMouseDown={() => handleToggleFavorite()}
-              // onMouseDown={handleToggleFavorite}
             >
               Fav
             </button>
@@ -163,10 +161,7 @@ export const Details = () => {
   };
   const fetchFavorites = async () => {
     if (user && storeId) {
-      const favorites = await getFavoritesFromDB(
-        // user.userInformation.id!,
-        storeId!
-      );
+      const favorites = await getFavoritesFromDB(storeId!);
       console.log({ settingFav: favorites });
       setFavoriteItems(favorites);
     }

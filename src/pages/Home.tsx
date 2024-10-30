@@ -57,7 +57,6 @@ const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
       <button
         className="btn rounded-none bg-info text-info-conent"
         onClick={() => navigate(`/details/${store.id}/${store.name}`)}
-        // onClick={() => navigate(`/details/${store.id}`)}
       >
         expand
       </button>
@@ -68,15 +67,12 @@ const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
             handleGetUserStores(userIdRef.current)
           )
         }
-        // onClick={() => handleDeleteUserStore(store.id as string)}
       >
         delete
       </button>
     </div>
   );
 };
-
-// need to set teh defaulStoreCard to appear again if all stores have been deleted
 
 const defaultStoreCardData = {
   store: {
@@ -89,7 +85,6 @@ const defaultStoreCardData = {
 export const Home = () => {
   const { handleLogout, user } = useAuthProvider();
   const { handleGetUserStores, userTheme, stores } = useAppProvider();
-  // const { stores } = useAppProvider();
   const name = user?.userInformation.name;
 
   const subTitle: string = `${name}, welcome to your home page!`;
@@ -102,7 +97,6 @@ export const Home = () => {
     if (!user) return;
     if (!user.userInformation.id) return;
     handleGetUserStores(user.userInformation.id.toString());
-    // }, [user, stores]);
   }, [user]);
   console.log(`Home component render count: ${renderCount.current}`);
   return (
