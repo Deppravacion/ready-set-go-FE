@@ -53,9 +53,9 @@ export const SignUp = () => {
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left">
           <h1 className="text-5xl font-bold">Sign Up Now!</h1>
-          <p className="py-6">
+          <h3 className="py-6">
             Welcome to READY-SET-GO! Please sign-up to create your account.
-          </p>
+          </h3>
         </div>
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <form className="card-body" onSubmit={handleSubmit}>
@@ -67,8 +67,8 @@ export const SignUp = () => {
                 </div>
               </div>
               {/* Daisy avatar */}
-              {fields.map((field) => (
-                <>
+              {fields.map((field, i) => (
+                <div key={i}>
                   <label className="label">
                     <span className="label-text">{field.name}</span>
                   </label>
@@ -81,7 +81,7 @@ export const SignUp = () => {
                     }
                     required
                   />
-                </>
+                </div>
               ))}
             </div>
             <div className="form-control mt-6 flex gap-1">
@@ -110,9 +110,9 @@ export const SignUp = () => {
           <dialog id="my_modal_1" className="modal">
             <div className="modal-box">
               <h3 className="font-bold text-lg">Hello!</h3>
-              <p className="py-4 ">
+              <div className="py-4 ">
                 <HowItWorks />
-              </p>
+              </div>
               <div className="modal-action">
                 <form method="dialog">
                   {/* if there is a button in form, it will close the modal */}
