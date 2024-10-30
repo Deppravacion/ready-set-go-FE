@@ -2,7 +2,6 @@ import { toast } from "react-toastify";
 import { ItemsType } from "../../types/AppTypes";
 
 export const getItemsByStoreId = async (storeId: string) => {
-  // export const getItemsByStoreId = async (userId: string, storeId: string) => {
   return await fetch(`http://localhost:3000/stores/${storeId}/items`).then(
     (response) => response.json()
   );

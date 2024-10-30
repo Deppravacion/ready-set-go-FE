@@ -18,7 +18,6 @@ export const CreateStore = () => {
     { name, userId }: { name: string; userId: string }
   ) => {
     e.preventDefault();
-    console.log("name", name, "ID", userId);
     await handleAddStore(name, userId).then(() => {
       setName(name);
     });

@@ -30,7 +30,6 @@ export const SignUp = () => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("submitted");
     await handleSignUp(
       newUser.name || "",
       newUser.email,
