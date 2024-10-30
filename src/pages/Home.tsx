@@ -98,7 +98,7 @@ export const Home = () => {
     if (!user.userInformation.id) return;
     handleGetUserStores(user.userInformation.id.toString());
   }, [user]);
-  console.log(`Home component render count: ${renderCount.current}`);
+  // console.log(`Home component render count: ${renderCount.current}`);
   return (
     <>
       <div

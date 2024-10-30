@@ -18,7 +18,6 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
   const handleGetUserStores = async (userId: string) => {
     try {
       const userStores = await getUserStores(userId);
-      console.log({ getUserStoresAppContext: "fetching the userStores" });
       setStores(userStores);
     } catch (error) {
       console.error(error);
@@ -28,7 +27,7 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
 
   const handleDeleteUserStore = async (storeId: string) => {
     try {
-      await deleteStore(storeId);
+      await deleteStore(storeId).then(() => handleGetUserStores);
       console.log({ deletingStore: `storeId: ${storeId}` });
     } catch (error) {
       console.error(error);
