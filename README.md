@@ -19,8 +19,6 @@ Ready Set Go is a simple and intuitive app designed to help users manage their i
 
 `npm i `
 
-2. Create the .env file and add content following the .env example file.
-
 ### Running
 
 Execute the following command to run the app:
