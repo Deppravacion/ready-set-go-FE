@@ -49,8 +49,6 @@ export const AppProvider = ({ children }: { children: JSX.Element }) => {
   };
 
   const handleCreateItem = async (item: ItemsType, storeId: string) => {
-    console.log("handleCreateItem  under construction");
-
     try {
       const newItem = {
         name: item.name,
