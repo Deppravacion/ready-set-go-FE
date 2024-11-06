@@ -6,7 +6,7 @@
 
 ## Description
 
-Ready Set Go is a simple and intuitive app designed to help users manage their inventory efficiently. It allows users to create, update, and delete store locations and items, and also provides a favorite functionality to keep track of favorite items.
+Ready-Set-Go is a simple and intuitive app designed to help users manage their inventory efficiently. It allows users to create, update, and delete store locations and items, and also provides a favorite functionality to keep track of favorite items.
 
 ### Cloning
 
