@@ -37,7 +37,7 @@ export const SignUp = () => {
       newUser.confirmPassword
     ).catch((e) => e.message);
 
-    navigate("/signin");
+    navigate("/signup");
   };
 
   const fields = [

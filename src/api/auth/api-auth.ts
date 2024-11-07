@@ -12,7 +12,6 @@ export const authenticateUser = async (
     },
     body: JSON.stringify({ email, password }),
   });
-  // console.log({ body: { email, password } });
   if (!response.ok) {
     toast.error("Error logging in.");
     throw new Error("Error logging in.");
